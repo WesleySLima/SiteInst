@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cadastro</title>
+    <link rel="stylesheet" type="text/css" href="css/estilos.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|PT+Sans+Narrow" rel="stylesheet">
+    <style>
+        body{
+               background:url("img/rural1.jpg") no-repeat center center;
+                background-size: cover;background-attachment: fixed; 
+                }
+        </style>
+</head>
+
+<body>
+    <nav class="menu">
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="#">Cadastre-se</a></li>
+        </ul>
+    </nav>
+
+
+        <form id="form_cadastro" class="formlogin"method="post" onsubmit="return cadastrar()">
+            <input type="text" placeholder="Inserir seu nome de usuário" name="nome" >
+            <input type="text" placeholder="inserir seu email de cadastro" name="login">
+            <input type="password" placeholder="Inserir sua senha de cadastro" name="senha">
+            <button class="botao" id="btn_entrar">Confirmar</button>
+        </form>
+    <div id="div_erro" style="background-color: sandybrown; color: maroon; display: none;">
+        Erro no cadastro
+    </div> 
+</body>
+
+</html>
+<script>
+    // function brandao() {
+    // if (nome.value && email.value && senha.value== "") {
+    //         alert('Prencha todos os campos de cadastro!')         }
+    // else {
+    //         alert('Usuário cadastrado com sucesso!')
+    //     }
+    // }
+
+    function cadastrar() {
+        aguardar();
+        var formulario = new URLSearchParams(new FormData(form_cadastro));
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            body: formulario
+        }).then(function (response) {
+            
+            if (response.ok) {
+
+                window.location.href='login.html';
+
+            } else {
+
+                console.log('Erro de cadastro!');
+                response.text().then(function (resposta) {
+                    div_erro.innerHTML = resposta;
+                });
+                finalizar_aguardar();
+            }
+        });
+
+        return false;
+    }
+
+    function aguardar() {
+        btn_entrar.disabled = true;
+
+    }
+
+    function finalizar_aguardar() {
+        btn_entrar.disabled = false;
+    }
+
+</script>
